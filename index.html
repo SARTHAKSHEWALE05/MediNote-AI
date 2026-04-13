@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Clinical Documentation Assistant - Generate structured SOAP clinical notes from consultation audio recordings">
+    <title>AI Clinical Documentation Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- ===== LOGIN PAGE ===== -->
+    <section id="page-login" class="page active">
+        <div class="login-wrapper">
+            <div class="login-hero">
+                <div class="login-hero-overlay"></div>
+                <div class="login-hero-content">
+                    <div class="hero-icon">
+                        <svg width="56" height="56" viewBox="0 0 64 64" fill="none">
+                            <rect width="64" height="64" rx="16" fill="rgba(255,255,255,0.15)"/>
+                            <path d="M32 16C23.16 16 16 23.16 16 32C16 40.84 23.16 48 32 48C40.84 48 48 40.84 48 32C48 23.16 40.84 16 32 16ZM30 40V34H26L34 24V30H38L30 40Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <h1 data-i18n="heroTitle">AI Clinical Documentation Assistant</h1>
+                    <p data-i18n="heroSubtitle">Transform consultation recordings into structured SOAP clinical notes with AI-powered documentation.</p>
+                    <div class="hero-features">
+                        <div class="hero-feature">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <span data-i18n="heroFeature1">HIPAA Compliant</span>
+                        </div>
+                        <div class="hero-feature">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                            <span data-i18n="heroFeature2">Save 60% Time</span>
+                        </div>
+                        <div class="hero-feature">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span data-i18n="heroFeature3">Structured SOAP Notes</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Language selector on login page -->
+                <div class="login-lang-selector">
+                    <div class="lang-dropdown" id="login-lang-dropdown">
+                        <button class="lang-btn" id="login-lang-btn" title="Change Language">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                            <span id="login-lang-label">English</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                        </button>
+                        <div class="lang-menu" id="login-lang-menu">
+                            <button class="lang-option active" data-lang="en">English</button>
+                            <button class="lang-option" data-lang="hi">हिन्दी</button>
+                            <button class="lang-option" data-lang="ta">தமிழ்</button>
+                            <button class="lang-option" data-lang="te">తెలుగు</button>
+                            <button class="lang-option" data-lang="bn">বাংলা</button>
+                            <button class="lang-option" data-lang="mr">मराठी</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="login-form-container">
+                <div class="login-form-inner">
+                    <div class="login-form-header">
+                        <div class="login-mobile-logo">
+                            <svg width="36" height="36" viewBox="0 0 64 64" fill="none">
+                                <rect width="64" height="64" rx="16" fill="var(--primary)"/>
+                                <path d="M32 16C23.16 16 16 23.16 16 32C16 40.84 23.16 48 32 48C40.84 48 48 40.84 48 32C48 23.16 40.84 16 32 16ZM30 40V34H26L34 24V30H38L30 40Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <h2 data-i18n="welcomeBack">Welcome Back</h2>
+                        <p data-i18n="signInSubtitle">Sign in to access your clinical documentation workspace</p>
+                    </div>
+                    <form id="login-form" class="login-form" autocomplete="off">
+                        <div class="form-group">
+                            <label for="doctor-name" data-i18n="fullName">Full Name</label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <input type="text" id="doctor-name" data-i18n-placeholder="fullNamePlaceholder" placeholder="Dr. Jane Smith" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="doctor-email" data-i18n="emailAddress">Email Address</label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                                <input type="email" id="doctor-email" placeholder="jane.smith@hospital.org" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="hospital-name" data-i18n="hospitalClinic">Hospital / Clinic</label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg>
+                                <input type="text" id="hospital-name" data-i18n-placeholder="hospitalPlaceholder" placeholder="City General Hospital" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="login-btn" class="btn btn-primary btn-full">
+                            <span data-i18n="signIn">Sign In</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </form>
+                    <p class="login-footer-text" data-i18n="loginFooter">By signing in, you agree to our Terms of Service and Privacy Policy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== APP SHELL ===== -->
+    <section id="app-shell" class="page">
+        <!-- Top Navigation -->
+        <nav id="top-nav" class="top-nav">
+            <div class="nav-left">
+                <div class="nav-logo">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+                        <rect width="64" height="64" rx="16" fill="var(--primary)"/>
+                        <path d="M32 16C23.16 16 16 23.16 16 32C16 40.84 23.16 48 32 48C40.84 48 48 40.84 48 32C48 23.16 40.84 16 32 16ZM30 40V34H26L34 24V30H38L30 40Z" fill="white"/>
+                    </svg>
+                    <span class="nav-title">ClinicalDoc<span class="nav-title-accent">AI</span></span>
+                </div>
+            </div>
+            <div class="nav-center">
+                <button class="nav-link active" data-nav="dashboard" id="nav-dashboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    <span data-i18n="navDashboard">Dashboard</span>
+                </button>
+                <button class="nav-link" data-nav="new-consultation" id="nav-new-consultation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    <span data-i18n="navNewConsultation">New Consultation</span>
+                </button>
+                <button class="nav-link" data-nav="records" id="nav-records">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                    <span data-i18n="navRecords">Records</span>
+                </button>
+            </div>
+            <div class="nav-right">
+                <!-- Language Switcher -->
+                <div class="lang-dropdown" id="nav-lang-dropdown">
+                    <button class="lang-btn lang-btn-nav" id="nav-lang-btn" title="Change Language">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                        <span id="nav-lang-label">EN</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+                    </button>
+                    <div class="lang-menu" id="nav-lang-menu">
+                        <button class="lang-option active" data-lang="en">English</button>
+                        <button class="lang-option" data-lang="hi">हिन्दी</button>
+                        <button class="lang-option" data-lang="ta">தமிழ்</button>
+                        <button class="lang-option" data-lang="te">తెలుగు</button>
+                        <button class="lang-option" data-lang="bn">বাংলা</button>
+                        <button class="lang-option" data-lang="mr">मराठी</button>
+                    </div>
+                </div>
+                <div class="nav-divider"></div>
+                <div class="nav-user" id="nav-user-info">
+                    <div class="nav-avatar" id="nav-avatar">DS</div>
+                    <div class="nav-user-details">
+                        <span class="nav-user-name" id="nav-user-name">Dr. Smith</span>
+                        <span class="nav-user-hospital" id="nav-user-hospital">City Hospital</span>
+                    </div>
+                </div>
+                <button class="nav-logout-btn" id="logout-btn" title="Sign Out">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Dashboard View -->
+        <div id="view-dashboard" class="view active">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div class="dashboard-welcome">
+                        <h1 id="welcome-msg">Good afternoon, Dr. Smith</h1>
+                        <p data-i18n="dashboardSubtitle">Manage your consultations and clinical documentation</p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-new-consultation">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                        <span data-i18n="startNewConsultation">Start New Consultation</span>
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-blue">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-total">0</span>
+                            <span class="stat-label" data-i18n="totalNotes">Total Notes</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-green">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-today">0</span>
+                            <span class="stat-label" data-i18n="today">Today</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-purple">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">~3 min</span>
+                            <span class="stat-label" data-i18n="avgGeneration">Avg. Generation</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-amber">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">100%</span>
+                            <span class="stat-label" data-i18n="consentRate">Consent Rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Notes -->
+                <div class="section-block">
+                    <div class="section-header">
+                        <h2 data-i18n="recentClinicalNotes">Recent Clinical Notes</h2>
+                        <button class="btn btn-ghost" id="btn-view-all-records" data-i18n="viewAll">View All</button>
+                    </div>
+                    <div id="recent-notes-list" class="notes-list">
+                        <div class="empty-state">
+                            <div class="empty-icon-wrap">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </div>
+                            <p data-i18n="noNotesYet">No clinical notes yet</p>
+                            <span data-i18n="noNotesHint">Start a new consultation to generate your first SOAP note</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Consultation View -->
+        <div id="view-new-consultation" class="view">
+            <div class="container container-narrow">
+                <div class="page-header">
+                    <h1 data-i18n="newConsultation">New Consultation</h1>
+                    <p data-i18n="newConsultationSub">Upload or record a consultation to generate structured clinical notes</p>
+                </div>
+
+                <!-- Step 1: Patient Consent -->
+                <div class="card card-glow" id="consent-card">
+                    <div class="card-header">
+                        <div class="step-badge">1</div>
+                        <div>
+                            <h3 data-i18n="patientConsent">Patient Consent</h3>
+                            <p data-i18n="consentSubtitle">Ensure patient has provided informed consent before recording</p>
+                        </div>
+                    </div>
+                    <div class="consent-box">
+                        <label class="checkbox-label" for="consent-checkbox">
+                            <input type="checkbox" id="consent-checkbox">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">
+                                <strong data-i18n="consentStrong">Patient has given informed consent</strong> <span data-i18n="consentRest">for audio recording of this consultation for the purpose of clinical documentation.</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2: Audio Upload/Record -->
+                <div class="card card-glow" id="audio-card">
+                    <div class="card-header">
+                        <div class="step-badge">2</div>
+                        <div>
+                            <h3 data-i18n="consultationAudio">Consultation Audio</h3>
+                            <p data-i18n="audioSubtitle">Upload an existing recording or record a new consultation</p>
+                        </div>
+                    </div>
+                    <div class="audio-options">
+                        <div class="audio-upload-zone" id="upload-zone">
+                            <input type="file" id="audio-file-input" accept="audio/*" hidden>
+                            <div class="upload-icon-wrap">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            </div>
+                            <p class="upload-text"><span data-i18n="dragDrop">Drag & drop audio file or</span> <span class="upload-link" data-i18n="browse">browse</span></p>
+                            <span class="upload-hint" data-i18n="uploadHint">Supports MP3, WAV, M4A, OGG (Max 50MB)</span>
+                        </div>
+                        <div class="audio-divider">
+                            <span data-i18n="or">OR</span>
+                        </div>
+                        <div class="record-section">
+                            <button class="btn-record" id="btn-record">
+                                <div class="record-dot"></div>
+                                <span data-i18n="startRecording">Start Recording</span>
+                            </button>
+                            <div class="recording-indicator" id="recording-indicator" style="display:none;">
+                                <div class="recording-pulse"></div>
+                                <span class="recording-time" id="recording-time">00:00</span>
+                                <button class="btn btn-outline btn-sm" id="btn-stop-record" data-i18n="stop">Stop</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-selected" id="file-selected" style="display:none;">
+                        <div class="file-info">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                            <span id="file-name">consultation_audio.mp3</span>
+                        </div>
+                        <button class="btn-icon" id="btn-remove-file" title="Remove file">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Patient Details -->
+                <div class="card card-glow" id="details-card">
+                    <div class="card-header">
+                        <div class="step-badge">3</div>
+                        <div>
+                            <h3><span data-i18n="patientDetails">Patient Details</span> <span class="badge-optional" data-i18n="optional">Optional</span></h3>
+                            <p data-i18n="detailsSubtitle">Provide additional context for more accurate documentation</p>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patient-name" data-i18n="patientName">Patient Name</label>
+                            <input type="text" id="patient-name" data-i18n-placeholder="patientNamePlaceholder" placeholder="e.g., Rajesh Kumar">
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-age" data-i18n="age">Age</label>
+                            <input type="text" id="patient-age" placeholder="e.g., 45">
+                        </div>
+                        <div class="form-group">
+                            <label for="patient-gender" data-i18n="gender">Gender</label>
+                            <select id="patient-gender">
+                                <option value="" data-i18n="genderSelect">Select</option>
+                                <option value="male" data-i18n="male">Male</option>
+                                <option value="female" data-i18n="female">Female</option>
+                                <option value="other" data-i18n="other_gender">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="btn btn-primary btn-full btn-lg btn-generate-main" id="btn-generate">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    <span data-i18n="generateNotes">Generate Clinical Notes</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Processing View -->
+        <div id="view-processing" class="view">
+            <div class="processing-container">
+                <div class="processing-card">
+                    <div class="processing-animation">
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring delay-1"></div>
+                        <div class="pulse-ring delay-2"></div>
+                        <div class="processing-icon">
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h2 data-i18n="analyzingConsultation">Analyzing Consultation</h2>
+                    <p class="processing-subtitle" data-i18n="generatingDocs">Generating structured clinical documentation…</p>
+                    <div class="processing-steps">
+                        <div class="processing-step active" id="pstep-1">
+                            <div class="pstep-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg></div>
+                            <span data-i18n="step1">Transcribing audio recording</span>
+                        </div>
+                        <div class="processing-step" id="pstep-2">
+                            <div class="pstep-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg></div>
+                            <span data-i18n="step2">Identifying clinical entities</span>
+                        </div>
+                        <div class="processing-step" id="pstep-3">
+                            <div class="pstep-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg></div>
+                            <span data-i18n="step3">Structuring SOAP notes</span>
+                        </div>
+                        <div class="processing-step" id="pstep-4">
+                            <div class="pstep-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg></div>
+                            <span data-i18n="step4">Finalizing documentation</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results View -->
+        <div id="view-results" class="view">
+            <div class="container container-narrow">
+                <div class="results-header">
+                    <div class="results-success-badge">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+                        <span data-i18n="notesGenerated">Clinical Notes Generated Successfully</span>
+                    </div>
+                    <div class="results-meta">
+                        <span id="results-date"></span>
+                        <span class="meta-sep">•</span>
+                        <span id="results-patient"></span>
+                    </div>
+                </div>
+
+                <div class="soap-container" id="soap-container">
+                    <div class="soap-section soap-subjective">
+                        <div class="soap-label">S</div>
+                        <div class="soap-content">
+                            <h3 data-i18n="subjective">Subjective</h3>
+                            <p id="soap-subjective"></p>
+                        </div>
+                    </div>
+                    <div class="soap-section soap-objective">
+                        <div class="soap-label">O</div>
+                        <div class="soap-content">
+                            <h3 data-i18n="objective">Objective</h3>
+                            <p id="soap-objective"></p>
+                        </div>
+                    </div>
+                    <div class="soap-section soap-assessment">
+                        <div class="soap-label">A</div>
+                        <div class="soap-content">
+                            <h3 data-i18n="assessment">Assessment</h3>
+                            <p id="soap-assessment"></p>
+                        </div>
+                    </div>
+                    <div class="soap-section soap-plan">
+                        <div class="soap-label">P</div>
+                        <div class="soap-content">
+                            <h3 data-i18n="plan">Plan</h3>
+                            <p id="soap-plan"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn btn-primary" id="btn-download-pdf">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span data-i18n="downloadPDF">Download as PDF</span>
+                    </button>
+                    <button class="btn btn-outline" id="btn-save-records">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+                        <span data-i18n="saveToRecords">Save to Records</span>
+                    </button>
+                    <button class="btn btn-ghost" id="btn-new-after-result">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                        <span data-i18n="newConsultation">New Consultation</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Records View -->
+        <div id="view-records" class="view">
+            <div class="container">
+                <div class="page-header">
+                    <h1 data-i18n="clinicalRecords">Clinical Records</h1>
+                    <p data-i18n="recordsSubtitle">View all previously generated clinical documentation</p>
+                </div>
+                <div id="records-list" class="notes-list">
+                    <div class="empty-state">
+                        <div class="empty-icon-wrap">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                        </div>
+                        <p data-i18n="noRecords">No records yet</p>
+                        <span data-i18n="noRecordsHint">Generated clinical notes will appear here</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Note Detail Modal -->
+        <div class="modal-overlay" id="modal-overlay">
+            <div class="modal" id="note-modal">
+                <div class="modal-header">
+                    <h3 data-i18n="clinicalNote">Clinical Note</h3>
+                    <button class="btn-icon" id="modal-close">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" id="modal-download-pdf">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span data-i18n="downloadPDF">Download PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div class="toast" id="toast">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+            <span id="toast-msg">Saved successfully</span>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
