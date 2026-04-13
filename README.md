@@ -30,7 +30,7 @@ Color-coded structured clinical notes with S/O/A/P sections.
 
 ```bash
 # Clone the repository
-git clone https://github.com/SARTHAKSHEWALE05/ai-clinical-docs.git
+git clone https://github.com/SARTHAKSHEWALE05/MediNote-AI.git
 cd ai-clinical-docs
 
 # Serve locally (any method)
@@ -88,6 +88,6 @@ Switch languages using the 🌐 globe dropdown on the login page or navigation b
 
 This is a **UI prototype/demo**. The AI clinical note generation is simulated with realistic mock data. It is not intended for actual medical use. All clinical notes should be reviewed by a qualified healthcare professional.
 
-## 📄 License
+<!-- ## 📄 License
 
-MIT License — feel free to use, modify, and distribute.
+MIT License — feel free to use, modify, and distribute. -->
